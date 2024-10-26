@@ -5,15 +5,16 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=luci-app-lyin-frpc
-PKG_VERSION:=1.1
+PKG_NAME:=luci-app-gecoosac-pro
+PKG_VERSION:=1.1.1
 PKG_RELEASE:=1
 
-LUCI_TITLE:=LuCI Support for frpc
-LUCI_DEPENDS:=
+LUCI_TITLE:=LuCI Support for gecoosac
+LUCI_DEPENDS:=+luci-compat
 LUCI_PKGARCH:=all
 
 define Package/$(PKG_NAME)/conffiles
+/etc/gecoosac
 endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
