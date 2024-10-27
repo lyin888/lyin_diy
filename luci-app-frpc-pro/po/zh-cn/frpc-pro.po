@@ -282,10 +282,3 @@ msgstr "Flash 模式需要6M的储存空间，如果空间不够请用内存模�
 
 msgid "Download source address"
 msgstr "下载源地址"
-
-msgid "Update frpc"
-msgstr "更新 frpc"
-
-msgid "Download FRPC program manually"
-msgstr "手动下载FRPC程序。"
-

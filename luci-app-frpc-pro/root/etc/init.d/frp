@@ -1,10 +1,10 @@
+#!/bin/sh /etc/rc.common
+
 START=99
 SERVICE_WRITE_PID=1
 SERVICE_DAEMONIZE=1
 
 LOGFILE="/var/etc/frp/frpc.log"
-tmpfile=/tmp/etc/tmp_frpc
-tarfile=frp_"$ver"_linux_"$ARCH".tar.gz
 
 echo_date(){
 	local log=$1
@@ -59,7 +59,7 @@ conf_proxy_add() {
 	echo "" >>$tmpconf
 	echo "[$remark]" >>$tmpconf
 	echo "type=$type" >>$tmpconf
-	[ -n "$custom_domains" ] && echo "custom_domains=$custom_domains.$server_addr" >>$tmpconf
+	[ -n "$custom_domains" ] && echo "custom_domains=$custom_domains" >>$tmpconf
 	[ -n "$subdomain" ] && echo "subdomain=$subdomain" >>$tmpconf
 	[ -n "$remote_port" ] && echo "remote_port=$remote_port" >>$tmpconf
 	[ -z "$stcp_role" ] && [ -n "$local_ip" ] && echo "local_ip=$local_ip" >>$tmpconf
@@ -78,7 +78,7 @@ conf_proxy_add() {
 	[ -n "$plugin_unix_path" ] && echo "plugin_unix_path=$plugin_unix_path" >>$tmpconf
 	
 	[ -n "$stcp_role" ] && {
-		if [ "$stcp_role" == "visitor" ]; then
+		if [ "$stcp_role" == "vistor" ]; then
 			echo "role=$stcp_role" >>$tmpconf
 			[ -n "$local_ip" ] && echo "bind_addr=$local_ip" >>$tmpconf
 			[ -n "$local_port" ] && echo "bind_port=$local_port" >>$tmpconf
@@ -133,8 +133,11 @@ routercpu(){
 		case "$a" in
 			all|noarch)
 				;;
-			aarch64_cortex-a53|aarch64_armv8-a|arm_arm1176jzf-s_vfp|arm_arm926ej-s|arm_cortex-a15_neon-vfpv4|arm_cortex-a5|arm_cortex-a53_neon-vfpv4|arm_cortex-a7_neon-vfpv4|arm_cortex-a8_vfpv3|arm_cortex-a9|arm_cortex-a9_neon|arm_cortex-a9_vfpv3|arm_fa526|arm_mpcore|arm_mpcore_vfp|arm_xscale|armeb_xscale)
+			aarch64_armv8-a|arm_arm1176jzf-s_vfp|arm_arm926ej-s|arm_cortex-a15_neon-vfpv4|arm_cortex-a5|arm_cortex-a53_neon-vfpv4|arm_cortex-a7_neon-vfpv4|arm_cortex-a8_vfpv3|arm_cortex-a9|arm_cortex-a9_neon|arm_cortex-a9_vfpv3|arm_fa526|arm_mpcore|arm_mpcore_vfp|arm_xscale|armeb_xscale)
 				ARCH="arm"
+				;;
+			aarch64_cortex-a53)
+				ARCH="arm64"
 				;;
 			i386_pentium|i386_pentium4)
 				ARCH="386"
@@ -168,6 +171,9 @@ downfile(){
 			2)
 				download="download_binary2"
 				;;
+			3)
+				download="download_binary3"
+				;;
 			*)
 				echo $(date "+%F %T"): error.
 				exit 0
@@ -180,18 +186,21 @@ downfile(){
 download_binary(){
 	stop
 	routercpu
-	echo_date "从github.com下载frpc二进制文件..."
+	echo_date "开始下载frpc二进制文件..."
+	filever=$ver
+	tarfile=frp_"$filever"_linux_"$ARCH".tar.gz
+	tmpfile=/tmp/etc/tmp_frpc
 	rm -rf $bin_path
 
-	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 https://github.com/fatedier/frp/releases/download/v$ver/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
+	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 --tries=10 -o $LOGFILE https://download.lyin.org/frp/v$filever/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
 
 	[ -f /tmp/$tarfile ] && tar zxvf /tmp/$tarfile -C /tmp && \
-	mv /tmp/frp_"$ver"_linux_$ARCH/frpc  $bin_path
+	mv /tmp/frp_"$filever"_linux_$ARCH/frpc  $bin_path
 	[ -f "$bin_path" ] && ln -s $bin_path /usr/bin/frpc
 
 	if [ -L /usr/bin/frpc ]; then
 		chmod +x $bin_path && [ -x "$bin_path" ] && echo_date "frpc 下载完成"
-	rm -rf /tmp/frp_"$ver"_linux_"$ARCH"*
+	rm -rf /tmp/frp_"$filever"_linux_"$ARCH"*
 	else
 		echo_date "下载frpc二进制文件失败，请重试！"
 	fi
@@ -200,31 +209,62 @@ download_binary(){
 download_binary2(){
 	stop
 	routercpu
-	echo_date "自建服务器下载frpc二进制文件..."
+	echo_date "开始下载frpc二进制文件..."
+	filever=$ver
+	tarfile=frp_"$filever"_linux_"$ARCH".tar.gz
 	tmpfile=/tmp/etc/tmp_frpc
 	rm -rf $bin_path
-	
-	[ ! -s "$bin_path" ] && wget --no-check-certificate --timeout=10 https://download.lyin.org/frp/v$filever/$tarfile -O $tmpfile && echo_date "成功下载frpc二进制文件."
 
-	mv $tmpfile $bin_path
+	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 --tries=10 -o $LOGFILE https://download.lyin.org/frp/v$filever/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
+
+	[ -f /tmp/$tarfile ] && tar zxvf /tmp/$tarfile -C /tmp && \
+	mv /tmp/frp_"$filever"_linux_$ARCH/frpc  $bin_path
 	[ -f "$bin_path" ] && ln -s $bin_path /usr/bin/frpc
 
 	if [ -L /usr/bin/frpc ]; then
 		chmod +x $bin_path && [ -x "$bin_path" ] && echo_date "frpc 下载完成"
+	rm -rf /tmp/frp_"$filever"_linux_"$ARCH"*
 	else
 		echo_date "下载frpc二进制文件失败，请重试！"
 	fi
 }
 
+download_binary3(){
+	stop
+	routercpu
+	echo_date "开始下载frpc二进制文件..."
+	filever=$ver
+	tarfile=frp_"$filever"_linux_"$ARCH".tar.gz
+	tmpfile=/tmp/etc/tmp_frpc
+	rm -rf $bin_path
+
+	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 --tries=10 -o $LOGFILE https://download.lyin.org/frp/v$filever/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
+
+	[ -f /tmp/$tarfile ] && tar zxvf /tmp/$tarfile -C /tmp && \
+	mv /tmp/frp_"$filever"_linux_$ARCH/frpc  $bin_path
+	[ -f "$bin_path" ] && ln -s $bin_path /usr/bin/frpc
+
+	if [ -L /usr/bin/frpc ]; then
+		chmod +x $bin_path && [ -x "$bin_path" ] && echo_date "frpc 下载完成"
+	rm -rf /tmp/frp_"$filever"_linux_"$ARCH"*
+	else
+		echo_date "下载frpc二进制文件失败，请重试！"
+	fi
+}
 boot() {
-	sleep 5s
+	sleep 10s
+	start
+}
+
+boot() {
+	sleep 10s
 	start
 }
 
 start() {
 
 	config_load "frp"
-	local enabled server_addr server_port time privilege_token token tcp_mux enable_cpool bin_path time ver url
+	local enabled server_addr server_port time privilege_token tcp_mux enable_cpool bin_path time ver url
 	local pool_count log_level log_max_days login_fail_exit http_proxy protocol
 
 	config_get_bool enabled common enabled 1
@@ -234,7 +274,6 @@ start() {
 	config_get server_addr common server_addr
 	config_get server_port common server_port
 	config_get privilege_token common privilege_token
-	config_get token common token
 	config_get enable_cpool common enable_cpool
 	config_get pool_count common pool_count
 	config_get log_level common log_level
@@ -249,19 +288,20 @@ start() {
 	downfile
 	[ ! -f "$LOGFILE" ] && touch $LOGFILE
 
-	[ -f "$bin_path" ] && echo_date "frpc 文件正常"
+	[ -f "$bin_path" ] && chmod +x $bin_path  && echo_date "frpc 正常" && ln -s $bin_path /usr/bin/frpc
+
+	[ ! -f "/usr/bin/frpc" ] && $download
 
 	[ "$ver" != "$(/usr/bin/frpc -v)" ] && echo "重新下载frpc" && rm -rf /usr/bin/frpc && $download
 
-	[ ! -f "bin_path" ] && logger -t Frp '下载frpc二进制文件失败，请重试'
+	[ ! -f "/usr/bin/frpc" ] && logger -t Frp '下载frpc二进制文件失败，请重试' && exit 0
 
 	local tmpconf="/var/etc/frp/frpc.conf"
 
 	echo "[common]" >$tmpconf
 	echo "server_addr=${server_addr}" >>$tmpconf
 	echo "server_port=${server_port}" >>$tmpconf
-	echo "token=${token}" >>$tmpconf
-	echo "privilege_token=${token}" >>$tmpconf
+	echo "privilege_token=${privilege_token}" >>$tmpconf
 	echo "log_level=${log_level}" >>$tmpconf
 	echo "log_max_days=${log_max_days}" >>$tmpconf
 	echo "protocol=${protocol}" >>$tmpconf
@@ -279,10 +319,8 @@ start() {
 	SERVICE_DAEMONIZE=1 \
 		service_start /usr/bin/frpc -c $tmpconf
 
-	pidof=$(pidof frpc)
-        [ "$pidof" != "0" ] && echo "frpc 正在运行 $pidof" && echo_date "frpc 正在运行 $pidof"
-        [ "$time" -gt 0 ] && frp_add_cru $time
-        [ -z "$(pgrep /usr/bin/frpc)" ] && echo_date "frp服务启动失败，请检查服务端 “TCP多路复用(tcp_mux)”设置，确保与客户端完全一致！"
+	[ "$time" -gt 0 ] && frp_add_cru $time
+	[ -z "$(pgrep /usr/bin/frpc)" ] && echo_date "frp服务启动失败，请检查服务端 “TCP多路复用(tcp_mux)”设置，确保与客户端完全一致！"
 
 	return 0
 }
@@ -293,7 +331,6 @@ stop() {
 		logger -t FRPC 'Shutting down frp service'
 		service_stop /usr/bin/frpc
 		service_stop $bin_path
-		killall -9 frpc
 		Reduce_Log $LOGFILE
 	fi
 	return 0

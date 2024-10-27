@@ -10,7 +10,7 @@ PKG_VERSION:=1.2
 PKG_RELEASE:=1
 
 LUCI_TITLE:=LuCI Support for frpc
-LUCI_DEPENDS:=+wget
+LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
 
 define Package/$(PKG_NAME)/conffiles

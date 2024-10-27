@@ -1,16 +1,13 @@
 local o=require"luci.dispatcher"
 local e=require("luci.model.ipkg")
 local s=require"nixio.fs"
-
-local util = require "luci.util"
-local fs = require "nixio.fs"
-local sys = require "luci.sys"
+local SYS  = require "luci.sys"
 
 local e=luci.model.uci.cursor()
 local i="frp"
 local a,t,e
 local n={}
-if sys.call("pidof frpc >/dev/null") == 0 then
+if SYS.call("pidof frpc >/dev/null") == 0 then
 	Status = translate("<strong><font color=\"green\">frpc is Running</font></strong>")
 else
 	Status = translate("<strong><font color=\"red\">frpc is Not Running</font></strong>")
@@ -29,7 +26,7 @@ t:tab("log",translate("Client Log"))
 e=t:taboption("base",Flag, "enabled", translate("Enabled"))
 e.rmempty=false
 
-info = luci.sys.exec("/etc/frp/frpc -v")
+info = luci.sys.exec("/etc/frpc -v")
 info = luci.sys.exec("/tmp/etc/frp/frpc -v")
 
 e=t:taboption("base",Value, "ver", translate("Software version"), translate("Custom version.<strong><font color=\"green\">current version:</font></strong>") .. info)
@@ -39,26 +36,22 @@ e:value("0.61.0")
 e=t:taboption("base",Value, "bin_path", translate("Operating mode"), translate("Flash mode requires 6M of storage space, if not enough space, please use memory mode"))
 e.rmempty=false
 e:value("/tmp/etc/frp/frpc", translate("RAM  /tmp/etc/frp/frpc"))
-e:value("/etc/frp/frpc", translate("Flash  /etc/frp/frpc"))
+e:value("/etc/frpc", translate("Flash  /etc/frpc"))
 
 e=t:taboption("base", ListValue,"url" ,  translate("Download source address"), 
-	translate("<br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://github.com/fatedier/frp/releases\" onclick=\"window.open('https://github.com/fatedier/frp/releases')\" /><br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://download.lyin.org\" onclick=\"window.open('https://download.lyin.org/?dir=/frp/')\" />"))
+	translate("<br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://download.lyin.org\" onclick=\"window.open('https://download.lyin.org')\" />"))
 e.rmempty=false
-e:value("1", translate("https://github.com/fatedier/frp/releases"))
-e:value("2", translate("https://download.lyin.org"))
+e:value("1", translate("https://download.lyin.org"))
 
-e=t:taboption("base",Button,"_update",translate("Update frpc"),translate("Download FRPC program manually"))
-e.inputstyle="apply"
-e.write=function()
-luci.sys.exec("/usr/share/frp/downfrpc")
-luci.http.redirect(luci.dispatcher.build_url("admin","services","frp"))
-end
+e=t:taboption("base",Value, "server_addr", translate("Server"), translate("<strong></strong>"))
+e.rmempty=false
+e:value("67.218.146.120:", translate(""))
 
 e=t:taboption("base",Value, "server_port", translate("Port"))
 e.datatype = "port"
 e.optional=false
 e.rmempty=false
-e=t:taboption("base",Value, "token", translate("Privilege Token"), translate("Time duration between server of frpc and frps mustn't exceed 15 minutes."))
+e=t:taboption("base",Value, "privilege_token", translate("Privilege Token"), translate("Time duration between server of frpc and frps mustn't exceed 15 minutes."))
 e.optional=false
 e.password=true
 e.rmempty=false
