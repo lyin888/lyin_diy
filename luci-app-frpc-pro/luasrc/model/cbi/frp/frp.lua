@@ -47,12 +47,12 @@ e.rmempty=false
 e:value("1", translate("https://github.com/fatedier/frp/releases"))
 e:value("2", translate("https://download.lyin.org"))
 
---e=t:taboption("base",Button,"_update",translate("Update frpc"),translate("Download FRPC program manually"))
---e.inputstyle="apply"
---e.write=function()
---luci.sys.exec("/usr/share/frp/downfrpc")
---luci.http.redirect(luci.dispatcher.build_url("admin","services","frp"))
---end
+e=t:taboption("base",Button,"_update",translate("Update frpc"),translate("Download FRPC program manually"))
+e.inputstyle="apply"
+e.write=function()
+luci.sys.exec("/usr/share/frp/downfrpc")
+luci.http.redirect(luci.dispatcher.build_url("admin","services","frp"))
+end
 
 e=t:taboption("base",Value, "server_port", translate("Port"))
 e.datatype = "port"
