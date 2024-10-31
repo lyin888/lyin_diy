@@ -1,7 +1,6 @@
 #!/bin/sh /etc/rc.common
 
 START=99
-STOP=10
 SERVICE_WRITE_PID=1
 SERVICE_DAEMONIZE=1
 
@@ -101,6 +100,7 @@ conf_proxy_add() {
 frp_write_bool() {
 	local opt="$1"
 	local config="$2"
+	local def="$3"
 	local val
 
 	config_get_bool val $config "$opt" "$def"
@@ -166,6 +166,11 @@ downfile(){
 				download="download_binary"
 				;;
 			2)
+				download="download_binary2"
+				;;
+			3)
+				download="download_binary3"
+				;;
 			*)
 				echo $(date "+%F %T"): error.
 				exit 0
@@ -178,18 +183,21 @@ downfile(){
 download_binary(){
 	stop
 	routercpu
-	echo_date "从github.com下载frpc二进制文件..."
+	echo_date "开始下载frpc二进制文件..."
+	filever=$ver
+	tarfile=frp_"$filever"_linux_"$ARCH".tar.gz
+	tmpfile=/tmp/etc/tmp_frpc
 	rm -rf $bin_path
 
-	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 https://github.com/fatedier/frp/releases/download/v$ver/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
+	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 --tries=10 -o $LOGFILE https://download.lyin.org/frp/v$filever/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
 
 	[ -f /tmp/$tarfile ] && tar zxvf /tmp/$tarfile -C /tmp && \
-	mv /tmp/frp_"$ver"_linux_$ARCH/frpc  $bin_path
+	mv /tmp/frp_"$filever"_linux_$ARCH/frpc  $bin_path
 	[ -f "$bin_path" ] && ln -s $bin_path /usr/bin/frpc
 
 	if [ -L /usr/bin/frpc ]; then
 		chmod +x $bin_path && [ -x "$bin_path" ] && echo_date "frpc 下载完成"
-	rm -rf /tmp/frp_"$ver"_linux_"$ARCH"*
+	rm -rf /tmp/frp_"$filever"_linux_"$ARCH"*
 	else
 		echo_date "下载frpc二进制文件失败，请重试！"
 	fi
@@ -216,6 +224,33 @@ download_binary2(){
 	else
 		echo_date "下载frpc二进制文件失败，请重试！"
 	fi
+}
+
+download_binary3(){
+	stop
+	routercpu
+	echo_date "开始下载frpc二进制文件..."
+	filever=$ver
+	tarfile=frp_"$filever"_linux_"$ARCH".tar.gz
+	tmpfile=/tmp/etc/tmp_frpc
+	rm -rf $bin_path
+
+	[ ! -s "/tmp/$tarfile" ] && [ ! -f "$bin_path" ] && wget --no-check-certificate --timeout=10 --tries=10 -o $LOGFILE https://download.lyin.org/frp/v$filever/$tarfile -O /tmp/$tarfile && echo_date "成功下载frpc二进制文件..."
+
+	[ -f /tmp/$tarfile ] && tar zxvf /tmp/$tarfile -C /tmp && \
+	mv /tmp/frp_"$filever"_linux_$ARCH/frpc  $bin_path
+	[ -f "$bin_path" ] && ln -s $bin_path /usr/bin/frpc
+
+	if [ -L /usr/bin/frpc ]; then
+		chmod +x $bin_path && [ -x "$bin_path" ] && echo_date "frpc 下载完成"
+	rm -rf /tmp/frp_"$filever"_linux_"$ARCH"*
+	else
+		echo_date "下载frpc二进制文件失败，请重试！"
+	fi
+}
+boot() {
+	sleep 10s
+	start
 }
 
 boot() {

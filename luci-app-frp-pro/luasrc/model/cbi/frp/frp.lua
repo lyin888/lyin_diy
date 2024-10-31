@@ -26,27 +26,27 @@ t:tab("log",translate("Client Log"))
 e=t:taboption("base",Flag, "enabled", translate("Enabled"))
 e.rmempty=false
 
-info = luci.sys.exec("/usr/bin/frpc -v")
-info = luci.sys.exec("/tmp/etc/frp/frpc -v")
+info = luci.sys.exec("/etc/frpc -v")
 
 e=t:taboption("base",Value, "ver", translate("Software version"), translate("Custom version.<strong><font color=\"green\">current version:</font></strong>") .. info)
 e.rmempty=false
-e:value("0.61.0")
+e:value("0.34.0")
 
 e=t:taboption("base",Value, "bin_path", translate("Operating mode"), translate("Flash mode requires 6M of storage space, if not enough space, please use memory mode"))
 e.rmempty=false
 e:value("/tmp/etc/frp/frpc", translate("RAM  /tmp/etc/frp/frpc"))
-e:value("/usr/bin/frpc", translate("Flash  /usr/bin/frpc"))
+e:value("/etc/frpc", translate("Flash  /etc/frpc"))
 
 e=t:taboption("base", ListValue,"url" ,  translate("Download source address"), 
-	translate("<br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://github.com/fatedier/frp/releases\" onclick=\"window.open('https://github.com/fatedier/frp/releases')\" /><br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"http://down.xxorg.com/frp 国内\" onclick=\"window.open('https://download.lyin.org/?dir=/frp')\" />"))
+	translate("<br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://download.lyin.org ARM\" onclick=\"window.open('https://download.lyin.org')\" /><br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://download.lyin.org MIPS\" onclick=\"window.open('https://download.lyin.org')\" /><br /><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"https://download.lyin.org MIPSLE\" onclick=\"window.open('https://download.lyin.org')\" />"))
 e.rmempty=false
-e:value("1", translate("https://github.com/fatedier/frp/releases"))
-e:value("2", translate("https://download.lyin.org 国内"))
+e:value("1", translate("https://download.lyin.org ARM"))
+e:value("2", translate("https://download.lyin.org MIPS"))
+e:value("3", translate("https://download.lyin.org MIPSEL"))
 
 e=t:taboption("base",Value, "server_addr", translate("Server"), translate("<strong></strong>"))
 e.rmempty=false
-e:value("34.92.149.221", translate(""))
+e:value("67.218.146.120:", translate(""))
 
 e=t:taboption("base",Value, "server_port", translate("Port"))
 e.datatype = "port"

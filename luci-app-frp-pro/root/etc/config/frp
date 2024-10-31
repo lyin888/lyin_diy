@@ -14,7 +14,7 @@ config frp 'common'
 	option log_level 'info'
 	option enable_http_proxy '0'
 	option protocol 'tcp'
-	option ver '0.61.0'
+	option ver '0.44.0'
 	option url '2'
 	option bin_path '/tmp/etc/frp/frpc'
 
