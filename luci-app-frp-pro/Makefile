@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-frp-pro
-PKG_VERSION:=2.1
-PKG_RELEASE:=8
+PKG_VERSION:=2.2
+PKG_RELEASE:=9
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)
 
 PO2LMO:=$(TOPDIR)/po2lmo
