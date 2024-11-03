@@ -20,7 +20,7 @@ define Package/$(PKG_NAME)
   SECTION:=luci
   CATEGORY:=LuCI
   SUBMENU:=3. Applications
-  DEPENDS:=
+  DEPENDS:=+wget-ssl
   TITLE:=luci-app-frpc
   PKGARCH:=all
 endef
