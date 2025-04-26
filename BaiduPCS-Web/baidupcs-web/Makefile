@@ -1,7 +1,6 @@
 #
 # Copyright (C) 2019 OpenWrt.org
 #
-# lyin888 <lyin007@gmail.com>
 #
 # This is free software, licensed under the GNU General Public License v3.
 #
@@ -10,16 +9,16 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=baidupcs-web
 PKG_VERSION:=3.9.7
-PKG_RELEASE:=3
+PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/baidupcs-web
-  SECTION:=net
-  CATEGORY:=Network
-  TITLE:=BaiduPCS-Web is a web controller for BaiduPCS-Go
-  URL:=
+define Package/$(PKG_NAME)
+	SECTION:=net
+	CATEGORY:=Network
+	TITLE:=BaiduPCS-Web is a web controller for BaiduPCS-Go
 endef
+
 
 define Package/$(PKG_NAME)/description
 BaiduPCS-Web is a web controller for BaiduPCS-Go
@@ -29,7 +28,7 @@ endef
 STRIP:=true
 
 ifeq ($(ARCH),i386)
-	PKG_ARCH_BAIDUPCS-WEB:=386
+	PKG_ARCH_BAIDUPCS-WEB:=86
 endif
 
 ifeq ($(ARCH),x86_64)
@@ -45,21 +44,21 @@ ifeq ($(ARCH),mips)
 endif
 
 ifeq ($(ARCH),arm)
-ifeq ($(BOARD),bcm53xx)
-	PKG_ARCH_BAIDUPCS-WEB:=armv5
-else ifeq ($(BOARD),kirkwood)
-	PKG_ARCH_BAIDUPCS-WEB:=armv5
-else
-	PKG_ARCH_BAIDUPCS-WEB:=armv7
+	PKG_ARCH_BAIDUPCS-WEB:=arm
 endif
+
+ifeq ($(ARCH),arm64)
+	PKG_ARCH_BAIDUPCS-WEB:=arm64
 endif
 
 ifeq ($(ARCH),aarch64)
 	PKG_ARCH_BAIDUPCS-WEB:=arm64
 endif
 
-PKG_SOURCE:=BaiduPCS-Go-v$(PKG_VERSION)-linux-$(PKG_ARCH_BAIDUPCS-WEB).zip
-PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/raw/main/
+
+PKG_SOURCE:=BaiduPCS-Go-$(PKG_VERSION)-linux-$(PKG_ARCH_BAIDUPCS-WEB).zip
+
+PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/releases/download/$(PKG_VERSION)/
 
 UNZIP_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_NAME)-unzip
 
@@ -76,10 +75,10 @@ endef
 define Build/Compile
 endef
 
-define Package/baidupcs-web/install
+define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(UNZIP_DIR)/*/BaiduPCS-Go $(1)/usr/bin/baidupcs-web
-	chmod 755 $(1)/usr/bin/baidupcs-web
+	$(INSTALL_BIN) $(UNZIP_DIR)/*/BaiduPCS-Go $(1)/usr/bin/$(PKG_NAME)
+	chmod 755 $(1)/usr/bin/$(PKG_NAME)
 endef
 
-$(eval $(call BuildPackage,baidupcs-web))
+$(eval $(call BuildPackage,$(PKG_NAME)))
