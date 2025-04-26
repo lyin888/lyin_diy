@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=baidupcs-web
 PKG_VERSION:=3.9.7
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -59,7 +59,7 @@ ifeq ($(ARCH),aarch64)
 endif
 
 PKG_SOURCE:=BaiduPCS-Go-v$(PKG_VERSION)-linux-$(PKG_ARCH_BAIDUPCS-WEB).zip
-PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/releases/download/$(PKG_VERSION)/
+PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/raw/main/
 
 UNZIP_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_NAME)-unzip
 
