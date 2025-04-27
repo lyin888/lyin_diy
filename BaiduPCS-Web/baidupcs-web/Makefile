@@ -59,7 +59,7 @@ ifeq ($(ARCH),aarch64)
 endif
 
 PKG_SOURCE:=BaiduPCS-Go-v$(PKG_VERSION)-linux-$(PKG_ARCH_BAIDUPCS-WEB).zip
-PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/releases/download/V$(PKG_VERSION)/$(PKG_ARCH)?
+PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/releases/download/V$(PKG_VERSION)/$(PKG_ARCH_BAIDUPCS-WEB)?
 
 UNZIP_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_NAME)-unzip
 
