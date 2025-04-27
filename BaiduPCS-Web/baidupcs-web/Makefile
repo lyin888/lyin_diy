@@ -58,8 +58,9 @@ ifeq ($(ARCH),aarch64)
 	PKG_ARCH_BAIDUPCS-WEB:=arm64
 endif
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(ARCH_PACKAGES)
-PKG_SOURCE_URL:=https://github.com/lyin888/BaiduPCS-Web/releases/download/V$(PKG_VERSION)/$(PKG_ARCH)?
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).zip
+PKG_SOURCE_URL:=https://codeload.github.com/lyin888/BaiduPCS-Web/zip/v${PKG_VERSION}?
+PKG_HASH:=e320a929204b1e5c9159e3eff92d69959813e6c7043943b3b5abd3991c16b7f5
 UNZIP_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)/$(PKG_NAME)-unzip
 
 PKG_HASH:=skip
