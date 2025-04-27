@@ -1,7 +1,6 @@
 #
-# Copyright (C) 2019 OpenWrt.org
+# Copyright (C) 2025 OpenWrt.org
 #
-# lyin888 <lyin007@gmail.com>
 #
 # This is free software, licensed under the GNU General Public License v3.
 #
