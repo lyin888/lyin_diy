@@ -1,4 +1,4 @@
-name: build
+name: gecoosac-pro
 on:
     workflow_dispatch:
 permissions:
@@ -8,8 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-        PACKAGE_NAME: luci-app-frp-pro
-        PACKAGE_I18N_NAME: luci-i18n-frp-pro-zh-cn
+        PACKAGE_NAME: luci-app-gecoosac-pro
+        PACKAGE_I18N_NAME: luci-i18n-gecoosac-pro-zh-cn
     steps:
       - name: 安装编译依赖
         run: |
