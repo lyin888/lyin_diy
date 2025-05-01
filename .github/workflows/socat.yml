@@ -1,4 +1,4 @@
-name: frp-pro
+name: socat
 on:
     workflow_dispatch:
 permissions:
