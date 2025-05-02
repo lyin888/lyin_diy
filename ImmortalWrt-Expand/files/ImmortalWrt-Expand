@@ -1,14 +1,6 @@
 #!/bin/sh
 
-opkg_mirror="$(uci -q get system.@imm_init[0].opkg_mirror)"
-if [ -z "$opkg_mirror" ]; then
-	opkg_mirror="https://downloads.immortalwrt.org"
-	uci -q batch <<-EOF
-		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
-		commit system
-	EOF
-fi
-
-sed -i.bak.bak "s,https://mirrors.vsean.net/openwrt,$opkg_mirror,g" "/etc/opkg/distfeeds.conf"
+rm -f /etc/opkg/distfeeds.conf
+mv /etc/opkg/distfeeds.conf.bak /etc/opkg/distfeeds.conf
 
 exit 0
