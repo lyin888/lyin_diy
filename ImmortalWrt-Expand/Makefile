@@ -7,6 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ImmortalWrt-Expand
+PKG_VERSION:=20250502
 PKG_RELEASE:=1
 
 PKG_LICENSE:=GPL-2.0-only
@@ -19,11 +20,6 @@ define Package/ImmortalWrt-Expand
   TITLE:=LuCI support for ImmortalWrt-Expand
   DEPENDS:=+luci
   PKGARCH:=all
-endef
-
-define Package/ImmortalWrt-Expand
-  TITLE:=Self-use expansion function.
-  DEPENDS:=
 endef
 
 define Build/Compile
