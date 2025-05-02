@@ -14,7 +14,7 @@ PKG_RELEASE:=1
 include $(INCLUDE_DIR)/package.mk
 
 define Package/Expand
-  TITLE:=
+  TITLE:=Self-use expansion function.
   MAINTAINER:=Lyin888
   DEPENDS:=
   VARIANT:=

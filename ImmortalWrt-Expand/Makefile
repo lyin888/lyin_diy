@@ -22,7 +22,7 @@ define Package/ImmortalWrt-Expand
 endef
 
 define Package/ImmortalWrt-Expand
-  TITLE+=
+  TITLE:=Self-use expansion function.
   DEPENDS:=
 endef
 
