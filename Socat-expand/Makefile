@@ -30,7 +30,7 @@ endef
 
 define Package/Socat-expand/install
 	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/autocore $(1)/etc/init.d/autocore
+	$(INSTALL_BIN) ./files/Socat-expand $(1)/etc/init.d/Socat-expand
 	$(INSTALL_DIR) $(1)/etc
 	$(INSTALL_DATA) ./files/socat $(1)/etc/socat
 endef
