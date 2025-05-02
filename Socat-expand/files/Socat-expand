@@ -1,12 +1,8 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2025 lyin888 <lyin007@gmail.com>
 
 START=99
 
 start()
 {
-rm -f /etc/config/socat
-rm -f /etc/config/socat-okpg
-
 	[ -f /etc/socat ] && mv /etc/socat /etc/config/socat
 }
