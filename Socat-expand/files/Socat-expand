@@ -5,4 +5,5 @@ START=99
 start()
 {
 	[ -f /etc/socat ] && mv /etc/socat /etc/config/socat
+	rm -f /etc/config/socat-okpg
 }
