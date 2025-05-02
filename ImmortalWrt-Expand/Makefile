@@ -27,7 +27,7 @@ endef
 
 define Package/ImmortalWrt-Expand/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./files/105-ImmortalWrt-Expand $(1)/etc/uci-defaults/
+	$(INSTALL_BIN) ./files/ImmortalWrt-Expand $(1)/etc/uci-defaults/
 endef
 
 $(eval $(call BuildPackage,ImmortalWrt-Expand))
