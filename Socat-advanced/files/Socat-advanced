@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rm -f /etc/config/socat-opkg
+
+exit 0

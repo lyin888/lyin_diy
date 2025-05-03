@@ -6,18 +6,18 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=ImmortalWrt-Expand
-PKG_VERSION:=20250502
+PKG_NAME:=Socat-advanced
+PKG_VERSION:=20250503
 PKG_RELEASE:=1
 
 PKG_LICENSE:=GPL-2.0-only
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/ImmortalWrt-Expand
+define Package/Socat-advanced
   SECTION:=luci
   CATEGORY:=LuCI
-  TITLE:=LuCI support for ImmortalWrt-Expand
+  TITLE:=LuCI support for Socat-advanced
   DEPENDS:=+luci
   PKGARCH:=all
 endef
@@ -25,9 +25,9 @@ endef
 define Build/Compile
 endef
 
-define Package/ImmortalWrt-Expand/install
+define Package/Socat-advanced/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./files/ImmortalWrt-Expand $(1)/etc/uci-defaults/
+	$(INSTALL_BIN) ./files/Socat-advanced $(1)/etc/uci-defaults/
 endef
 
-$(eval $(call BuildPackage,ImmortalWrt-Expand))
+$(eval $(call BuildPackage,Socat-advanced))
