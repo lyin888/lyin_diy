@@ -1,7 +1,9 @@
 #!/bin/sh
 
 rm -f /etc/config/socat
+
 rm -f /etc/config/socat-opkg
+
 mv /etc/socat /etc/config/socat
 
 exit 0

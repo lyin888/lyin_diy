@@ -1,6 +1,7 @@
 #!/bin/sh
 
 rm -f /etc/opkg/distfeeds.conf
+
 mv /etc/opkg/distfeeds.conf.bak /etc/opkg/distfeeds.conf
 
 exit 0
