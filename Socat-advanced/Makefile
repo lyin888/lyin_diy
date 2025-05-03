@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=Socat-advanced
 PKG_VERSION:=20250503
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_LICENSE:=GPL-2.0-only
 
@@ -28,6 +28,8 @@ endef
 define Package/Socat-advanced/install
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/Socat-advanced $(1)/etc/uci-defaults/
+	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_DATA) ./files/socat $(1)/etc/socat
 endef
 
 $(eval $(call BuildPackage,Socat-advanced))
