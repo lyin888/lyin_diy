@@ -1,8 +1,0 @@
-#!/bin/sh /etc/rc.common
-
-START=99
-
-start()
-{
-	[ -f /etc/socat ] && mv /etc/socat /etc/config/socat
-}
