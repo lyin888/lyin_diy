@@ -23,7 +23,7 @@ jobs:
 
       - name: 下载SDK
         run: |
-          url=https://downloads.immortalwrt.org/releases/24.10.1/targets/x86/64/immortalwrt-sdk-24.10.1-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+          url=https://downloads.immortalwrt.org/releases/24.10.2/targets/x86/64/immortalwrt-sdk-24.10.2-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
           wget -O immortalwrt.tar.zst $url
           tar -I zstd -xvf immortalwrt.tar.zst
           mv $(basename $url | awk -F '.tar.zst' '{ print $1 }') openwrt
