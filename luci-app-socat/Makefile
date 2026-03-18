@@ -1,6 +1,6 @@
 # Copyright (C) 2023 沉默の金 <cmzj11@gmail.com>
 # Copyright (C) 2020 Lienol <lawlienol@gmail.com>
-#
+# https://github.com/chenmozhijin/luci-app-socat
 # This is free software, licensed under the GNU General Public License v3.
 #
 
